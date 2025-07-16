@@ -226,3 +226,37 @@ footer a:hover {
     color: var(--color-naranja-acento);
     transform: scale(1.2) translateY(-3px);
 }
+
+/* --- ESTILOS MINIMALISTAS AÑADIDOS --- */
+
+/* Cabecera de la tabla */
+#lista-contactos thead th {
+    background-color: #f8f9fa; /* Un gris muy claro en lugar de negro */
+    color: var(--color-azul-oscuro); /* Texto azul oscuro de tu tema */
+    border-bottom: 2px solid var(--color-azul-oscuro); /* Borde inferior azul */
+    border-top: none;
+}
+
+/* Botón Editar Personalizado */
+.btn-info.btn-editar {
+    background-color: transparent;
+    color: var(--color-azul-oscuro);
+    border-color: var(--color-azul-oscuro);
+    transition: all 0.3s ease;
+}
+.btn-info.btn-editar:hover {
+    background-color: var(--color-azul-oscuro);
+    color: white;
+}
+
+/* Botón Eliminar Personalizado */
+.btn-danger.btn-eliminar {
+    background-color: transparent;
+    color: var(--color-naranja-acento);
+    border-color: var(--color-naranja-acento);
+    transition: all 0.3s ease;
+}
+.btn-danger.btn-eliminar:hover {
+    background-color: var(--color-naranja-acento);
+    color: white;
+}
