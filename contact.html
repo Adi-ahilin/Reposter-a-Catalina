@@ -154,12 +154,78 @@
                 </div>
             </div>
         </footer>
-
-        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
         
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>        
         <script>
-            // En el siguiente paso, aquí irá nuestro código jQuery.
+            $(document).ready(function() {
+                // 1. CARGAR PAÍSES DESDE LA API
+                $.ajax({
+                    url: 'https://restcountries.com/v3.1/lang/spanish',
+                    method: 'GET',
+                    success: function(data) {
+                        const selectPais = $('#pais');
+                        selectPais.empty();
+                        selectPais.append('<option value="">Seleccione un país</option>');
+                        data.sort((a, b) => a.name.common.localeCompare(b.name.common));
+                        data.forEach(function(country) {
+                            selectPais.append(
+                                `<option value="${country.name.common}" data-nombre-oficial="${country.name.official}">
+                                    ${country.name.common}
+                                </option>`
+                            );
+                        });
+                    },
+                    error: function() {
+                        console.error("No se pudo cargar la lista de países.");
+                        $('#pais').append('<option value="">Error al cargar países</option>');
+                    }
+                });
+
+                // 2. FUNCIÓN PARA CARGAR Y MOSTRAR CONTACTOS
+                function cargarContactos() {
+                    const contactos = JSON.parse(localStorage.getItem('contactos')) || [];
+                    const tablaCuerpo = $('#cuerpo-tabla-contactos');
+                    const tabla = $('#lista-contactos .table');
+                    const sinContactosMsg = $('#sin-contactos');
+
+                    tablaCuerpo.empty();
+
+                    if (contactos.length === 0) {
+                        sinContactosMsg.show();
+                        tabla.hide();
+                    } else {
+                        sinContactosMsg.hide();
+                        tabla.show();
+                        contactos.forEach(function(contacto) {
+                            const fila = `
+                                <tr>
+                                    <td>${contacto.nombre}</td>
+                                    <td>${contacto.telefono}</td>
+                                    <td>${contacto.email}</td>
+                                    <td>${contacto.pais}</td>
+                                    <td>${contacto.comentarios}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info btn-editar" data-id="${contacto.id}">Editar</button>
+                                        <button class="btn btn-sm btn-danger btn-eliminar" data-id="${contacto.id}">Eliminar</button>
+                                    </td>
+                                </tr>
+                            `;
+                            tablaCuerpo.append(fila);
+                        });
+                    }
+                }
+
+                // 3. EVENTO PARA ACTUALIZAR NOMBRE OFICIAL DEL PAÍS
+                $('#pais').on('change', function() {
+                    const nombreOficial = $(this).find('option:selected').data('nombre-oficial');
+                    $('#nombre-oficial').val(nombreOficial || '');
+                });
+
+                // --- INVOCACIÓN INICIAL ---
+                cargarContactos();
+
+            });
         </script>
 
     </body>
